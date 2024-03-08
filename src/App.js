@@ -1,7 +1,9 @@
+import NavigationBar from "./components/Navbar";
+
 export default function App() {
   return (
     <div>
-      <h1>Horizon Harbour</h1>
+      <NavigationBar />
     </div>
   );
 }
