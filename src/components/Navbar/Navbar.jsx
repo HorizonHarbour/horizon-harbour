@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import "./Navbar.css";
 
-import logo from "../assets/images/horizon-harbour-logo-white.png";
-import menu from "../assets/images/menu.svg";
-import exit from "../assets/images/exit.svg";
+import logo from "../../assets/images/horizon-harbour-logo-white.png";
+import menu from "../../assets/images/menu.svg";
+import exit from "../../assets/images/exit.svg";
+
+import "./Navbar.css";
 
 const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ const NavigationBar = () => {
 
   return (
     <header className="header navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container test">
+      <div className="container ">
         <div className="header-logo-box">
           <a href="">
             <img className="logo" src={logo} alt="Horizon Harbour Logo" />
@@ -27,7 +28,7 @@ const NavigationBar = () => {
           onClick={toggleMenu}
         />
 
-        <nav className={`main-nav ${menuOpen ? "menu-btn" : ""}`}>
+        <nav className={`main-nav  ${menuOpen ? "menu-btn" : ""}`}>
           <img
             className={`mobile-menu-exit ${menuOpen ? "" : "hidden"}`}
             src={exit}
