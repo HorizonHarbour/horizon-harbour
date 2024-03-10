@@ -1,10 +1,18 @@
 import logo from "../../assets/images/footer-logo.png";
 
+import {
+  FiDribbble,
+  FiFacebook,
+  FiInstagram,
+  FiLinkedin,
+  FiTwitter,
+} from "react-icons/fi";
+
 import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer-main-container bg-custom-color text-custom-color p-5">
+    <footer className="footer-main-container bg-custom-color text-custom-color p-5">
       <div className="container">
         <div className="row gap-4 gap-md-0">
           {/* First column */}
@@ -28,7 +36,6 @@ const Footer = () => {
               <span>Privacy Policy</span>
             </div>
             {/* Third column */}
-            {/* <div className="col-md-3 mb-4"> */}
             <div className="d-flex flex-column gap-4">
               <h4 className="text-white">Resources</h4>
               <span>Help Docs</span>
@@ -36,7 +43,6 @@ const Footer = () => {
               <span>Updates</span>
               <span>Contact Us</span>
             </div>
-            {/* </div> */}
           </div>
           {/* Fourth column */}
           <div className="col-md-12 col-lg-4 mb-4 d-flex flex-column gap-4">
@@ -58,8 +64,57 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+        <hr />
+
+        <div className="d-flex flex-column gap-4 text-center flex-md-row gap-md-0 align-items-center justify-content-between mt-5">
+          <span>2024 &copy; Horizon Harbour. All rights reserved.</span>
+          <div className="d-flex align-items-center gap-4 ">
+            <a
+              className="social-media-icon"
+              href="https://www.facebook.com/horizonharbour"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiFacebook />
+            </a>
+            <a
+              className="social-media-icon"
+              href="https://www.instagram.com/horizonharbour"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiInstagram />
+            </a>
+            <a
+              className="social-media-icon"
+              href="https://www.twitter.com/horizonharbour"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiTwitter />
+            </a>
+            <a
+              className="social-media-icon"
+              href="https://www.linkedin.com/horizonharbour"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiLinkedin />
+            </a>
+            <a
+              className="social-media-icon"
+              href="https://www.dribble.com/horizonharbour"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiDribbble />
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 };
+
 export default Footer;
