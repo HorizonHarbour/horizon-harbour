@@ -16,7 +16,7 @@ const Footer = () => {
       <div className="container">
         <div className="row gap-4 gap-md-0">
           {/* First column */}
-          <div className="col-md-4 col-lg-4 mb-4">
+          <div className="col-md-4 col-lg-4 mb-4 mt-5 mt-md-0">
             <img src={logo} alt="Horizon Harbour Logo" className="mb-4" />
             <p>
               A pioneering project crafted as part of our graduation project,
