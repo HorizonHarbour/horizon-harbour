@@ -1,13 +1,45 @@
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 import { Link } from "react-router-dom";
-
 import authManImage from "../../assets/images/auth-page-man.png";
-
 import "./Signup.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const [signupError, setSignupError] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState("");
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      role: "jobSeeker",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/auth/signup",
+        data
+      );
+      setSignupSuccess("Signup successful! Redirecting to login page...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (error) {
+      console.error("Signup failed:", error.response.data.message);
+      setSignupError(error.response.data.message);
+    }
+  };
+
   return (
-    <div className="container vh-100">
-      <div className="row vh-100">
+    <div className="container min-vh-100">
+      <div className="row min-vh-100">
         {/* Left side with random man image */}
         <div className="col-md-6 p-0 d-flex justify-content-center align-items-center d-none d-md-flex position-relative">
           <img
@@ -22,39 +54,128 @@ const Signup = () => {
             <h2 className="text-center mb-4 fw-bold">
               Join us & get more opportunities!
             </h2>
-            <form>
+            {signupError && (
+              <p className="text-danger fw-bolder text-center">{signupError}</p>
+            )}
+            {signupSuccess && (
+              <p className="text-success fw-bolder text-center">
+                {signupSuccess}
+              </p>
+            )}
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label htmlFor="name" className="form-label">
-                  Full Name
+                  Full Name:
                 </label>
                 <input
                   type="text"
                   className="form-control p-3"
                   id="name"
                   placeholder="Enter your full name"
+                  {...register("name", {
+                    required: "Name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Name must be at least 2 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Name must not exceed 20 characters",
+                    },
+                  })}
                 />
+                {errors.name && (
+                  <p className="text-danger mt-2">{errors.name.message}</p>
+                )}
               </div>
               <div className="mb-4">
                 <label htmlFor="email" className="form-label">
-                  Email Address
+                  Email Address:
                 </label>
                 <input
                   type="email"
                   className="form-control p-3"
                   id="email"
                   placeholder="Enter email address"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: "Invalid email address",
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: "Email must not exceed 50 characters",
+                    },
+                    minLength: {
+                      value: 6,
+                      message: "Email must be at least 6 characters long",
+                    },
+                  })}
                 />
+                {errors.email && (
+                  <p className="text-danger mt-2">{errors.email.message}</p>
+                )}
               </div>
               <div className="mb-4">
                 <label htmlFor="password" className="form-label">
-                  Password
+                  Password:
                 </label>
                 <input
                   type="password"
                   className="form-control  p-3"
                   id="password"
                   placeholder="Enter password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Password must not exceed 20 characters",
+                    },
+                  })}
                 />
+                {errors.password && (
+                  <p className="text-danger mt-2">{errors.password.message}</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label htmlFor="role" className="form-label">
+                  Role:
+                </label>
+                <p className="role-note">
+                  NOTE: Role Field is NOT required! However, if you leave it
+                  untouched as it is written below, role will be set
+                  automatically to <span className="fw-bolder">jobSeeker</span>!{" "}
+                  <br /> Feel free to change it to{" "}
+                  <span className="fw-bolder">employer</span> if needed!
+                </p>
+                <input
+                  type="text"
+                  className="form-control  p-3"
+                  id="role"
+                  placeholder="jobSeeker or employer"
+                  {...register("role", {
+                    pattern: {
+                      value: /^(jobSeeker|employer)$/i,
+                      message: "Role must be jobSeeker or employer",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Role must not exceed 20 characters",
+                    },
+                    minLength: {
+                      value: 6,
+                      message: "Role must be at least 6 characters long",
+                    },
+                  })}
+                />
+                {errors.role && (
+                  <p className="text-danger mt-2">{errors.role.message}</p>
+                )}
               </div>
 
               <button

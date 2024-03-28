@@ -1,11 +1,12 @@
-/* .custom-bg-login {
-  background-color: #e0e0e5 !important;
-} */
-
 .custom-signup-section-padding {
   padding: 50px;
 }
 
 .custom-bg-signup-btn {
   background-color: #4640de;
+}
+
+.role-note {
+  font-size: 10px;
+  font-style: italic;
 }

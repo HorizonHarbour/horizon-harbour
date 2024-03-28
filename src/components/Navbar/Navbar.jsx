@@ -6,10 +6,14 @@ import logo from "../../assets/images/horizon-harbour-logo-white.png";
 import menu from "../../assets/images/menu.svg";
 import exit from "../../assets/images/exit.svg";
 
+import { useAuth } from "../../customHooks/useAuth";
+
 import "./Navbar.css";
+import Logout from "../Logout/Logout";
 
 const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isAuthenticated = useAuth();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -52,17 +56,29 @@ const NavigationBar = () => {
             </div>
 
             <div className="d-flex align-content-center gap-3 right-side-nav">
-              <Link to="login">
-                <button className="text-primary-color fw-bold border-0 bg-transparent custom-padding mt-2">
-                  Login
-                </button>
-              </Link>
+              {isAuthenticated ? (
+                <Logout />
+              ) : (
+                <Link to="login">
+                  <button className="text-white fw-bold bg-primary-color border-0 custom-padding mt-2">
+                    Login
+                  </button>
+                </Link>
+              )}
               <div className="vertical-line"></div>
-              <Link to="signup">
-                <button className="text-white fw-bold bg-primary-color border-0 custom-padding mt-2">
-                  Sign up
-                </button>
-              </Link>
+              {isAuthenticated ? (
+                <Link to="profile">
+                  <button className="text-white fw-bold bg-primary-color border-0 custom-padding mt-2">
+                    Profile
+                  </button>
+                </Link>
+              ) : (
+                <Link to="signup">
+                  <button className="text-white fw-bold bg-primary-color border-0 custom-padding mt-2">
+                    Signup
+                  </button>
+                </Link>
+              )}
             </div>
           </ul>
         </nav>

@@ -1,13 +1,45 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 import authManImage from "../../assets/images/auth-page-man.png";
+import { Link, Navigate } from "react-router-dom";
+
+import { GoogleLogin } from "@react-oauth/google";
 
 import "./Login.css";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [loginError, setLoginError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState("");
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/auth/signin",
+        data
+      );
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      setLoginSuccess("Login successful! Reloading to home page...");
+      setTimeout(() => {
+        Navigate("/login");
+      }, 3000);
+      window.location.reload();
+    } catch (error) {
+      console.error("Login failed:", error.response.data.message);
+      setLoginError(error.response.data.message);
+    }
+  };
+
   return (
-    <div className="container vh-100">
-      <div className="row vh-100">
+    <div className="container min-vh-100">
+      <div className="row min-vh-100">
         {/* Left side with random man image */}
         <div className="col-md-6 p-0 d-flex justify-content-center align-items-center d-none d-md-flex position-relative">
           <img
@@ -22,7 +54,30 @@ const Login = () => {
             <h2 className="text-center mb-4 fw-bold">
               Welcome Back! Good to see you!
             </h2>
-            <form>
+            {loginError && (
+              <p className="text-danger fw-bolder text-center">{loginError}</p>
+            )}
+            {loginSuccess && (
+              <p className="text-success fw-bolder text-center">
+                {loginSuccess}
+              </p>
+            )}
+            {/* GOOGLE LOGIN */}
+            <div className="d-flex justify-content-center align-items-center mb-4">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  console.log(credentialResponse);
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </div>
+            {/* GOOGLE LOGIN */}
+            <p className="stripe-line text-center mb-4 mt-4">
+              Or login with Email & Password
+            </p>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label htmlFor="email" className="form-label">
                   Email Address
@@ -32,6 +87,13 @@ const Login = () => {
                   className="form-control p-3"
                   id="email"
                   placeholder="Enter email address"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
                 />
               </div>
               <div className="mb-4">
@@ -40,9 +102,11 @@ const Login = () => {
                 </label>
                 <input
                   type="password"
-                  className="form-control  p-3"
-                  id="password"
+                  className="form-control p-3"
                   placeholder="Enter password"
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
               </div>
               {/* remember me */}
@@ -57,9 +121,6 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                <Link to="/forgot-password" className="text-decoration-none">
-                  Forgot Password?
-                </Link>
               </div>
               <button
                 type="submit"
